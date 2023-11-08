@@ -1,9 +1,19 @@
+import { deleteContacts } from 'components/api/api';
+import { Notify } from 'notiflix';
+import { useDispatch } from 'react-redux';
 import css from './ContactListItem.module.css';
 
-export const ContactListItem = ({ name, number, id, onRemoveContact }) => {
+export const ContactListItem = ({ name, phone, id }) => {
+  const dispatch = useDispatch();
+
+  const onRemoveContact = id => {
+    dispatch(deleteContacts(id));
+    Notify.success('The contact has been successfully removed');
+  };
+
   return (
     <li key={id} className={css.item}>
-      {name}: {number}&nbsp;&nbsp;
+      {name}: {phone}&nbsp;&nbsp;
       <button className={css.deletebtn} onClick={() => onRemoveContact(id)}>
         Delete
       </button>

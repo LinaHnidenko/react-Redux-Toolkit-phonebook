@@ -1,8 +1,18 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { contactFormReducer } from './contactForm/contactFormSlice';
-import { phonebookReducer } from './phonebook/phonebookSlice';
+
+import { contactsReducer } from './contacts/contactsSlice';
+import { filterReducer } from './filter/filterSlice';
 
 export const reducer = combineReducers({
-  contactForm: contactFormReducer,
-  phonebook: phonebookReducer,
+  contacts: contactsReducer,
+  filter: filterReducer,
 });
+
+// import { combineReducers } from '@reduxjs/toolkit';
+// import { contactFormReducer } from './contactForm/contactFormSlice';
+// import { phonebookReducer } from './phonebook/phonebookSlice';
+
+// export const reducer = combineReducers({
+//   contactForm: contactFormReducer,
+//   phonebook: phonebookReducer,
+// });

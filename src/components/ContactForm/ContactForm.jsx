@@ -1,34 +1,66 @@
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setName, setNumber } from 'redux/contactForm/contactFormSlice';
+// import { setName, setNumber } from 'redux/contactForm/contactFormSlice';
+import { Notify } from 'notiflix';
+import { createContacts } from 'components/api/api';
+import { selectContacts } from 'redux/selectors';
+import { nanoid } from '@reduxjs/toolkit';
 
-export const ContactForm = ({ createContact }) => {
-  const state = useSelector(state => state.contactForm);
+export const ContactForm = () => {
+  // const state = useSelector(state => state.contactForm);
 
+  // const dispatch = useDispatch();
+
+  // const handleChange = ({ target }) => {
+  //   if (target.name === 'name') {
+  //     dispatch(setName(target.value));
+  //   }
+  //   if (target.name === 'number') {
+  //     dispatch(setNumber(target.value));
+  //   }
+  // };
+
+  // const handleSubmit = evt => {
+  //   evt.preventDefault();
+
+  //   createContact(state);
+
+  //   reset();
+  // };
+
+  // const reset = () => {
+  //   dispatch(setName(''));
+  //   dispatch(setNumber(''));
+  // };
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
-  const handleChange = ({ target }) => {
-    if (target.name === 'name') {
-      dispatch(setName(target.value));
+  const handleSubmit = e => {
+    e.preventDefault();
+    const nameValue = e.target.name.value;
+    const numberValue = e.target.number.value;
+
+    if (nameValue) {
+      const existingContact = contacts.find(contact => {
+        if (contact.name) {
+          return contact.name.toLowerCase() === nameValue.toLowerCase();
+        }
+        return false;
+      });
+
+      if (existingContact) {
+        Notify.info(`${nameValue} is already in your contacts`);
+        return;
+      }
     }
-    if (target.name === 'number') {
-      dispatch(setNumber(target.value));
-    }
+    const newContact = {
+      id: nanoid(),
+      name: nameValue,
+      phone: numberValue,
+    };
+    dispatch(createContacts(newContact));
+    e.target.reset();
   };
-
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
-    createContact(state);
-
-    reset();
-  };
-
-  const reset = () => {
-    dispatch(setName(''));
-    dispatch(setNumber(''));
-  };
-
   return (
     <form onSubmit={handleSubmit} className={css.contactform}>
       <label className={css.label}>
@@ -38,8 +70,6 @@ export const ContactForm = ({ createContact }) => {
           type="text"
           name="name"
           required
-          onChange={handleChange}
-          value={state.name}
           placeholder="Enter name..."
           pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         />
@@ -51,8 +81,6 @@ export const ContactForm = ({ createContact }) => {
           type="tel"
           name="number"
           required
-          onChange={handleChange}
-          value={state.number}
           placeholder="Enter number..."
           pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
         />
