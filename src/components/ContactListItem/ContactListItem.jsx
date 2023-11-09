@@ -1,6 +1,6 @@
-import { deleteContacts } from 'components/api/api';
 import { Notify } from 'notiflix';
 import { useDispatch } from 'react-redux';
+import { deleteContacts } from 'redux/operations/operations';
 import css from './ContactListItem.module.css';
 
 export const ContactListItem = ({ name, phone, id }) => {

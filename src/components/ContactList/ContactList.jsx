@@ -1,28 +1,14 @@
-import { getContacts } from 'components/api/api';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/operations/operations';
 import {
   selectContacts,
   selectError,
   selectFilter,
   selectIsLoading,
-  selectVisibleContacts,
 } from 'redux/selectors';
 import { ContactListItem } from '../ContactListItem/ContactListItem';
 import css from './ContactList.module.css';
-
-// const getVisibleContacts = (contacts, normalizedFilter) => {
-//   if (!contacts) {
-//     return [];
-//   }
-
-//   return contacts.filter(({ name }) => {
-//     if (typeof name === 'string') {
-//       return name.toLowerCase().includes(normalizedFilter);
-//     }
-//     return false;
-//   });
-// };
 
 export const ContactList = () => {
   const contacts = useSelector(selectContacts);
@@ -30,12 +16,10 @@ export const ContactList = () => {
   const isLoading = useSelector(selectIsLoading);
   const error = useSelector(selectError);
 
-  // const normalizedFilter = filter ? filter.toLowerCase() : '';
-
   const handleFilterContacts = () => {
-    // const normalizedFilter = filter.toLowerCase();
+    const normalizedFilter = filter ? filter.toLowerCase() : '';
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter)
+      contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
 
@@ -51,10 +35,8 @@ export const ContactList = () => {
       {isLoading && <p>Loading...</p>}
       {error && <p>Error!</p>}
       <ul className={css.list}>
-        {filteredContacts.map(({ name, number, id }) => {
-          return (
-            <ContactListItem key={id} id={id} name={name} number={number} />
-          );
+        {filteredContacts.map(({ name, phone, id }) => {
+          return <ContactListItem key={id} id={id} name={name} phone={phone} />;
         })}
       </ul>
     </>

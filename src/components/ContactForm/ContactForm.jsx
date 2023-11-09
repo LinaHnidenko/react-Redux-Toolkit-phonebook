@@ -1,37 +1,11 @@
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-// import { setName, setNumber } from 'redux/contactForm/contactFormSlice';
 import { Notify } from 'notiflix';
-import { createContacts } from 'components/api/api';
 import { selectContacts } from 'redux/selectors';
 import { nanoid } from '@reduxjs/toolkit';
+import { createContacts } from 'redux/operations/operations';
 
 export const ContactForm = () => {
-  // const state = useSelector(state => state.contactForm);
-
-  // const dispatch = useDispatch();
-
-  // const handleChange = ({ target }) => {
-  //   if (target.name === 'name') {
-  //     dispatch(setName(target.value));
-  //   }
-  //   if (target.name === 'number') {
-  //     dispatch(setNumber(target.value));
-  //   }
-  // };
-
-  // const handleSubmit = evt => {
-  //   evt.preventDefault();
-
-  //   createContact(state);
-
-  //   reset();
-  // };
-
-  // const reset = () => {
-  //   dispatch(setName(''));
-  //   dispatch(setNumber(''));
-  // };
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
